@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S C H I Z O P H R E N I A : 3D Nightmare</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #000;
+            font-family: 'Courier New', Courier, monospace;
+            user-select: none;
+        }
+
+        #game-container {
+            width: 100vw;
+            height: 100vh;
+            display: block;
+        }
+
+        #ui-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        #crosshair {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 4px;
+            height: 4px;
+            background-color: rgba(255, 255, 255, 0.5);
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+        }
+
+        #health-ui {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            color: #ff3333;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px #000;
+        }
+
+        #blocker {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+            z-index: 10;
+        }
+
+        #instructions {
+            text-align: center;
+            cursor: pointer;
+        }
+
+        h1 {
+            color: #aa0000;
+            letter-spacing: 5px;
+            margin-bottom: 10px;
+        }
+
+        /* Film grain effect */
+        .grain {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 5;
+            opacity: 0.08;
+            background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+        }
+
+        /* Scanline effect */
+        .scanlines {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
+            z-index: 6;
+            opacity: 0.2;
+        }
+    </style>
+</head>
+<body>
+    <div id="blocker">
+        <div id="instructions">
+            <h1>S C H I Z O P H R E N I A</h1>
+            <p style="color: #ff3333; font-weight: bold; margin-bottom: 20px;">⚠️ PERINGATAN: Game ini mengandung kilatan cahaya, suara melengking (jumpscare), dan atmosfer horor intens.</p>
+            <div style="background: rgba(20,0,0,0.8); padding: 15px; border: 1px solid #550000; border-radius: 5px; margin-bottom: 25px; text-align: left; max-width: 500px; margin-left: auto; margin-right: auto;">
+                <h3 style="color: #ffaaaa; margin-top: 0;">Cara Bermain:</h3>
+                <ul style="color: #ccc; padding-left: 20px; line-height: 1.5;">
+                    <li>Gunakan <b>Mouse</b> untuk melihat sekeliling (kursor akan otomatis terkunci).</li>
+                    <li>Gunakan <b>W, A, S, D</b> untuk berjalan dalam kegelapan.</li>
+                    <li>Klik <b>Kanan Mouse</b> untuk menyalakan/mematikan Senter.</li>
+                    <li>Perhatikan indikator darah Anda (❤️). Jika layar bergetar dan darah menurun, <b>BERLARI MENJAUH!</b> Ada entitas yang mendekat.</li>
+                    <li>Tekan <b>Esc</b> untuk memunculkan kembali kursor mouse / menjeda game.</li>
+                </ul>
+            </div>
+            <p style="font-size: 24px; color: #fff; cursor: pointer; text-decoration: underline; text-underline-offset: 5px; transition: color 0.3s;" onmouseover="this.style.color='#ff0000'" onmouseout="this.style.color='#fff'">Klik Layar Untuk Memasuki Mimpi Buruk</p>
+        </div>
+    </div>
+
+    <div id="game-container"></div>
+    
+    <div id="ui-layer">
+        <div id="crosshair"></div>
+        <div id="health-ui">❤️ 100</div>
+    </div>
+
+    <div class="grain"></div>
+    <div class="scanlines"></div>
+
+    <script type="module" src="/src/main.js"></script>
+</body>
+</html>
